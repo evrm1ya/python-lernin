@@ -165,4 +165,50 @@ print cumulative_sum([4, 3, 2, 1])
 print cumulative_product([1, 2, 3, 4])
 print cumulative_product([4, 3, 2, 1])
 
+# Problem 10
+# Write a function `unique`to find all
+# the unique elements of a list.
+
+def unique(values):
+    cache = {}
+    result = []
+    for x in values:
+        if x in cache:
+            continue
+        cache[x] = 1
+        result.append(x)
+    return result
+
+print unique([1, 2, 1, 3, 2, 5])
+
+# Problem 10
+# Implement `dups` to find all duplicates in a list.
+
+def counts(values):
+    counts = {}
+    for x in values:
+        if x in counts:
+            counts[x] = counts[x] + 1
+            continue
+        counts[x] = 1
+    return counts
+
+print counts([1, 2, 1, 3, 2, 5])
+
+def dups(values):
+    result = []
+    cache = counts(values)
+    for key in cache:
+        if cache[key] > 1:
+            result.append(key)
+    return result
+
+print dups([1, 2, 1, 3, 2, 5])
+
+# Problem 10
+# Implement `group(list, size)` that takes a list
+# and splits it into smaller lists of given size.
+
+def group(l, size):
+    result = []
 
