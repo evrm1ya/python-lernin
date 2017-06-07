@@ -181,7 +181,7 @@ def unique(values):
 
 print unique([1, 2, 1, 3, 2, 5])
 
-# Problem 10
+# Problem 11
 # Implement `dups` to find all duplicates in a list.
 
 def counts(values):
@@ -205,7 +205,7 @@ def dups(values):
 
 print dups([1, 2, 1, 3, 2, 5])
 
-# Problem 10
+# Problem 12
 # Implement `group(list, size)` that takes a list
 # and splits it into smaller lists of given size.
 
@@ -223,3 +223,4 @@ def group(l, size):
 
 print group([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)
 print group([1, 2, 3, 4, 5, 6, 7, 8, 9], 4)
+
