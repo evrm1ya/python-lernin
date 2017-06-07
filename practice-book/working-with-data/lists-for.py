@@ -211,4 +211,15 @@ print dups([1, 2, 1, 3, 2, 5])
 
 def group(l, size):
     result = []
+    i = len(l) / size if len(l) % size == 0 else len(l) // size + 1
+    start = 0
+    end = size
+    while i > 0:
+        result.append(l[start:end])
+        start = start + size
+        end = end + size
+        i = i - 1
+    return result
 
+print group([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)
+print group([1, 2, 3, 4, 5, 6, 7, 8, 9], 4)
