@@ -1,3 +1,4 @@
+# needs work for python3
 for x in [1, 2, 3, 4, 5]:
     print x
 
@@ -32,6 +33,9 @@ print lambda_reduce_sum(values)
 
 def add(x, y):
     return x + y
+
+def product(x, y):
+    return x * y
 
 def no_lambda_reduce_sum(values):
     return reduce(add, values)
@@ -103,4 +107,62 @@ def such_reverse_much_wow(numbers):
 print such_reverse_much_wow(reverse_numbers)
 print such_reverse_much_wow(such_reverse_much_wow(reverse_numbers))
 print such_reverse_much_wow([])
+
+# Problem 7
+# Write custom `min` and `max` functions
+# What happens when called with lists of strings?
+
+min_max_numbers = [4, -1, -10, 8]
+min_max_strings = ['z', 'a', 'e', 'p']
+
+# assumes types of values are the same
+def compare(fn):
+    def f(values):
+        result = values[0]
+        for x in values[1:]:
+            if fn(x, result):
+                result = x
+        return result
+    return f
+
+def isLessThan(x, y):
+    return x < y
+
+def _not(fn):
+    def f(x, y):
+        return not fn(x, y)
+    return f
+
+new_min = compare(isLessThan)
+new_max = compare(_not(isLessThan))
+
+print new_min(min_max_numbers)
+print new_max(min_max_numbers)
+print new_min(min_max_strings)
+print new_max(min_max_strings)
+
+# Problem 8
+# Cumulative sum of a list
+# [a, a+b, a+b+c, ...]
+# Write an implementation
+
+# Problem 9
+# Cumulative product
+
+def cumulative_math(fn):
+    def f(values):
+        result = [values[0]]
+        for i, x in enumerate(values[1:]):
+            result.append(fn(x, result[i]))
+        return result
+    return f
+
+cumulative_sum = cumulative_math(add)
+cumulative_product = cumulative_math(product)
+
+print cumulative_sum([1, 2, 3, 4])
+print cumulative_sum([4, 3, 2, 1])
+print cumulative_product([1, 2, 3, 4])
+print cumulative_product([4, 3, 2, 1])
+
 
