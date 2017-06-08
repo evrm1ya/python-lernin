@@ -1,0 +1,7 @@
+this
+is
+some
+text
+in
+a
+file
