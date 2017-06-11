@@ -27,3 +27,4 @@ def extsort(files):
 
 print extsort(['a.c', 'a.py', 'b.py', 'appy.py', 
     'bar.txt', 'foo.txt', 'txty.txt', 'x.c'])
+
