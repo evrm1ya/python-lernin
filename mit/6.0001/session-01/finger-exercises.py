@@ -30,12 +30,43 @@ print(largest_odd_number(11, 7, 5))
 print(largest_odd_number(5, 7, 11))
 
 # print x based on input
-numXs = int(input('How many times should I print the letter x? '))
-toPrint = ''
-count = numXs
+# numXs = int(input('How many times should I print the letter x? '))
+# toPrint = ''
+# 
+# while numXs > 0:
+#     toPrint = toPrint + 'x'
+#     numXs = numXs - 1
+# 
+# print(toPrint)
 
-while count > 0:
-    toPrint = toPrint + 'x'
-    count = count - 1
+# Find a positive integer that is 
+# divisible by both 11 and 12
+x = 1
 
-print(toPrint)
+while True:
+    if x % 11 == 0 and x % 12 == 0:
+        break
+    x = x + 1
+
+print(x, 'is divisible by 11 and 12')
+
+# Write a program that asks the user to input
+# 10 integers, and then prints the largest odd
+# number that was entered
+
+highest = 0
+
+for i in range(0, 10):
+    number = int(input('Enter an integer: '))
+    if number % 2 == 0:
+        continue
+    if number > highest:
+        highest = number
+
+if highest == 0:
+    print('No odd or nonzero integers were entered')
+
+print('Highest odd number: %d ' % highest)
+
+
+
