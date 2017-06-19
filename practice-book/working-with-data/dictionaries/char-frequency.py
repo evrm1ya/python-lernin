@@ -7,8 +7,7 @@
 # program file, JS program file, or a text file?
 
 def character_frequency(text):
-    """
-        Returns the frequency of characters in the text.
+    """Returns the frequency of characters in the text.
     """
     frequency = {}
     for c in text:

@@ -5,8 +5,7 @@
 # in the descending order of the number of occurrences.
 
 def word_frequency_descending(frequency):
-    """
-        Returns a list of words sorted in descending order
+    """Returns a list of words sorted in descending order
         based on frequency.
         
         print frequency_descending({'a': 1, 'b': 3, 'c': 2})
