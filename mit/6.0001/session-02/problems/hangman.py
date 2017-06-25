@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Problem Set 2, hangman.py
 # Name: 
 # Collaborators:
@@ -32,8 +33,6 @@ def load_words():
     wordlist = line.split()
     print("  ", len(wordlist), "words loaded.")
     return wordlist
-
-
 
 def choose_word(wordlist):
     """
@@ -87,9 +86,56 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
+    if len(letters_guessed) == 0:
+        return string.ascii_lowercase
     letters_joined = ''.join(letters_guessed)
     return re.sub('([' + letters_joined + '])', '', string.ascii_lowercase) 
+
+vowels = ['a', 'e', 'i', 'o', 'u']
+
+def guesses_to_decrement(guess):
+    if guess in vowels:
+        return 2
+    return 1
+
+def total_score(secret_word, guesses):
+    '''
+    Returns the number of unique characters in secret_word *
+    remaining guesses.
+    '''
+    return len({c for c in secret_word}) * guesses
     
+def print_horizontal_line():
+    print('-------------')
+
+def print_loser_message(secret_word):
+    print('You lose.')
+    print('Secret word: %s' % secret_word)
+
+def print_round_stats(warnings, guesses, letters_guessed):
+    print_horizontal_line()
+    print('You have %d warnings left.' % warnings)
+    print('You have %d guesses left.' % guesses)
+    print('Available letters: %s' % get_available_letters(letters_guessed))
+
+def print_round_results(word, guesses, warnings, letters_guessed, result):
+    guessed_word = get_guessed_word(word, letters_guessed)
+    if result == 'not_valid':
+        print('Oops! That is not a valid letter.')
+        print('You have %d warnings left: %s' % (warnings, guessed_word))
+    elif result == 'already_guessed':
+        print("Oops! You've already guessed that letter.")
+        print('You have %d warnings left: %s' % (warnings, guessed_word))
+    elif result == 'not_found':
+        print('Oops! That letter is not in my word: %s' % guessed_word)
+    elif result == 'good_guess':
+        print('Good guess: %s' % guessed_word)
+    elif result == 'success':
+        print_horizontal_line()
+        print('Congratulations, you won!')
+        print('The word is: %s' % word)
+        print('Your total score for this game is: '
+                + '%d' % total_score(word, guesses))
 
 def hangman(secret_word):
     '''
@@ -116,10 +162,52 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    word_length = len(secret_word)
+    guesses = 6
+    warnings = 3
+    letters_guessed = []
+    print('Welcome to the game Hangman!')
+    print('I am thinking of a word that is %d letters long.' % word_length)
 
+    while guesses > 0:
+        print_round_stats(warnings, guesses, letters_guessed)
+        guess = str(input('Please guess a letter: ')).lower()
+        result = ''
+        
+        if guess == 'quit':
+            break
 
+        if not str.isalpha(guess) or not len(guess) == 1:
+            if warnings > 0:
+                warnings -= 1
+            else:
+                guesses -= 1
+            print_round_results(secret_word, guesses, warnings,
+                    letters_guessed, 'not_valid')
+            continue
+
+        if guess in letters_guessed:
+            if warnings > 0:
+                warnings -= 1
+            else:
+                guesses -= 1
+            print_round_results(secret_word, guesses, warnings,
+                    letters_guessed, 'already_guessed')
+            continue
+        
+        letters_guessed.append(guess)
+
+        if is_word_guessed(secret_word, letters_guessed):
+            print_round_results(secret_word, guesses, warnings,
+                    letters_guessed, 'success')
+            break
+        elif guess in secret_word:
+            print_round_results(secret_word, guesses, warnings,
+                    letters_guessed, 'good_guess')
+        else:
+            guesses -= guesses_to_decrement(guess)
+            print_round_results(secret_word, guesses, warnings,
+                    letters_guessed, 'not_found')
 
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
@@ -205,7 +293,8 @@ if __name__ == "__main__":
     # uncomment the following two lines.
     
     secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    hangman('apple')
+    #hangman(secret_word)
 
 ###############
     
