@@ -11,6 +11,7 @@
 # (so be sure to read the docstrings!)
 import random
 import string
+import re
 
 WORDLIST_FILENAME = "words.txt"
 
@@ -60,10 +61,10 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    for char in secret_word:
+        if char not in letters_guessed:
+            return False
+    return True
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -72,10 +73,13 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    result = ''
+    for char in secret_word:
+        if char in letters_guessed:
+            result += char + ' '
+            continue
+        result += '_ '
+    return result
 
 def get_available_letters(letters_guessed):
     '''
@@ -83,9 +87,8 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
+    letters_joined = ''.join(letters_guessed)
+    return re.sub('([' + letters_joined + '])', '', string.ascii_lowercase) 
     
 
 def hangman(secret_word):
