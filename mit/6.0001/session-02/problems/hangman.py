@@ -4,6 +4,8 @@
 # Collaborators:
 # Time spent:
 
+# TODO: Need to add Hangman with Hints
+
 # Hangman Game
 # -----------------------------------
 # Helper code
@@ -208,6 +210,9 @@ def hangman(secret_word):
             guesses -= guesses_to_decrement(guess)
             print_round_results(secret_word, guesses, warnings,
                     letters_guessed, 'not_found')
+    else:
+        print('You ran out of guesses.')
+        print('The word is %s' % secret_word)
 
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
@@ -293,8 +298,8 @@ if __name__ == "__main__":
     # uncomment the following two lines.
     
     secret_word = choose_word(wordlist)
-    hangman('apple')
-    #hangman(secret_word)
+    #hangman('apple')
+    hangman(secret_word)
 
 ###############
     
