@@ -15,7 +15,6 @@ def main(url, path):
     # handle.write(clean_text.strip())
     lines = response.readlines()
     handle = open(path, 'a')
-    print lines
     for line in lines:
         cleaned = re.sub('<.*?>', '', line).strip()
         if cleaned == '':
