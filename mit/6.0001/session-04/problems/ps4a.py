@@ -3,6 +3,19 @@
 # Collaborators:
 # Time Spent: x:xx
 
+def insert_char_into_seq(char, l):
+    length = len(l[0]) + 1
+    inserted = []
+
+    for seq in l:
+        for i in range(length):
+            if i == 0:
+                inserted.append(char + seq)
+                continue
+            inserted.append(seq[:i] + char + seq[i:])
+
+    return inserted
+
 def get_permutations(sequence):
     '''
     Enumerate all permutations of a given string
@@ -23,18 +36,58 @@ def get_permutations(sequence):
     a different order than what is listed here.
     '''
 
-    pass #delete this line and replace with your code here
+    length = len(sequence)
+
+    if length == 1:
+        return [sequence]
+
+    return insert_char_into_seq(sequence[0], get_permutations(sequence[1:]))
+
+
+
+
+def test_get_permutations(sequence, expected):
+    result = get_permutations(sequence)
+    print('Input:', sequence)
+    print('Expected Output:', expected)
+    print('Actual Output:', result)
+    print('Pass:', result == expected)
 
 if __name__ == '__main__':
-#    #EXAMPLE
-#    example_input = 'abc'
-#    print('Input:', example_input)
-#    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
-#    print('Actual Output:', get_permutations(example_input))
+    import timeit
+
+    print(insert_char_into_seq('p', ['le', 'el']))
+    #EXAMPLE
+    example_input = 'abc'
+    print('Input:', example_input)
+    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
+    print('Actual Output:', get_permutations(example_input))
     
 #    # Put three example test cases here (for your sanity, limit your inputs
 #    to be three characters or fewer as you will have n! permutations for a 
 #    sequence of length n)
 
-    pass #delete this line and replace with your code here
+    test_get_permutations(
+        'cow',
+        ['cow', 'ocw', 'owc', 'cwo', 'wco', 'woc']
+    )
 
+    print(timeit.timeit("get_permutations('rust')",
+        setup="from __main__ import get_permutations",
+        number=100
+    ))
+
+    print(timeit.timeit("get_permutations('super')",
+        setup="from __main__ import get_permutations",
+        number=100
+    ))
+
+    print(timeit.timeit("get_permutations('supercal')",
+        setup="from __main__ import get_permutations",
+        number=100
+    ))
+
+    print(timeit.timeit("get_permutations('supercali')",
+        setup="from __main__ import get_permutations",
+        number=100
+    ))
