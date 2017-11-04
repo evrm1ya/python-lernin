@@ -62,16 +62,16 @@ def binary_search(e, L):
 
     high = length - 1
     print('high', high)
-    avg = high // 2
-    print('avg', avg)
+    mid = high // 2
+    print('mid', mid)
 
-    if L[avg] == e:
+    if L[mid] == e:
         return True
 
-    if L[avg] < e:
-        return binary_search(e, L[avg + 1:])
+    if L[mid] < e:
+        return binary_search(e, L[mid + 1:])
     else:
-        return binary_search(e, L[:high - avg])
+        return binary_search(e, L[:high - mid])
 
 
 
