@@ -7,11 +7,11 @@ import feedparser
 import string
 import time
 import threading
+import re
 from project_util import translate_html
 from mtTkinter import *
 from datetime import datetime
 import pytz
-
 
 #-----------------------------------------------------------------------
 
@@ -54,7 +54,28 @@ def process(url):
 
 # Problem 1
 
-# TODO: NewsStory
+class NewsStory(object):
+    def __init__(self, guid, title, description, link, pubdate):
+        self.guid = guid
+        self.title = title
+        self.description = description
+        self.link = link
+        self.pubdate = pubdate
+
+    def get_guid(self):
+        return self.guid
+
+    def get_title(self):
+        return self.title
+
+    def get_description(self):
+        return self.description
+
+    def get_link(self):
+        return self.link
+
+    def get_pubdate(self):
+        return self.pubdate
 
 
 #======================
@@ -73,13 +94,47 @@ class Trigger(object):
 # PHRASE TRIGGERS
 
 # Problem 2
-# TODO: PhraseTrigger
+
+class PhraseTrigger(Trigger):
+    punctuation_reg_ex = r"[" + re.escape(string.punctuation) + "]"
+
+    def __init__(self, phrase):
+        self.phrase = phrase.lower()
+        self.phrase_reg_ex = r"^.*\b" + self.phrase + r"\b.*$"
+
+    def has_phrase(self, text):
+        cleaned_text = re.sub(
+            r"\s+",
+            ' ',
+            re.sub(self.punctuation_reg_ex, ' ', text.lower())
+        )
+
+        test = re.match(self.phrase_reg_ex, cleaned_text)
+        
+        if test == None:
+            return False
+        else:
+            return True
+
 
 # Problem 3
-# TODO: TitleTrigger
+
+class TitleTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        PhraseTrigger.__init__(self, phrase)
+
+    def evaluate(self, story):
+        return self.has_phrase(story.get_title())
 
 # Problem 4
-# TODO: DescriptionTrigger
+
+class DescriptionTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        PhraseTrigger.__init__(self, phrase)
+
+    def evaluate(self, story):
+        return self.has_phrase(story.get_description())
+
 
 # TIME TRIGGERS
 
