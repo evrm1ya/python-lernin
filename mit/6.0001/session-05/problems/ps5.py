@@ -13,7 +13,15 @@ from mtTkinter import *
 from datetime import datetime
 import pytz
 
+import urllib3
+import certifi
+
 #-----------------------------------------------------------------------
+
+http = urllib3.PoolManager(
+    cert_reqs = 'CERT_REQUIRED',
+    ca_certs = certifi.where()
+)
 
 #======================
 # Code for retrieving and parsing
@@ -21,12 +29,20 @@ import pytz
 # Do not change this code
 #======================
 
+# Ran into SSL issues, hence urllib3 and modifications
+
 def process(url):
     """
     Fetches news items from the rss url and parses them.
     Returns a list of NewsStory-s.
     """
-    feed = feedparser.parse(url)
+
+    res = http.request('GET', url)
+
+    #feed = feedparser.parse(url)
+
+    feed = feedparser.parse(res.data)
+
     entries = feed.entries
     ret = []
     for entry in entries:
@@ -292,11 +308,15 @@ def main_thread(master):
         button = Button(frame, text="Exit", command=root.destroy)
         button.pack(side=BOTTOM)
         guidShown = []
+
         def get_cont(newstory):
             if newstory.get_guid() not in guidShown:
                 cont.insert(END, newstory.get_title()+"\n", "title")
                 cont.insert(END, "\n---------------------------------------------------------------\n", "title")
                 cont.insert(END, newstory.get_description())
+                cont.insert(END, '\n')
+                cont.insert(END, 'LINK: ' + newstory.get_link())
+                cont.insert(END, '\n')
                 cont.insert(END, "\n*********************************************************************\n", "title")
                 guidShown.append(newstory.get_guid())
 
@@ -304,7 +324,13 @@ def main_thread(master):
 
             print("Polling . . .", end=' ')
             # Get stories from Google's Top Stories RSS news feed
-            stories = process("http://news.google.com/news?output=rss")
+            #stories = process("http://news.google.com/news?output=rss")
+
+            # Google Tech
+            stories = process("https://news.google.com/news/rss/headlines/section/topic/TECHNOLOGY?ned=us&hl=en&gl=US")
+
+            # Google Business
+            stories.extend(process("https://news.google.com/news/rss/headlines/section/topic/BUSINESS?ned=us&hl=en&gl=US"))
 
             # Get stories from Yahoo's Top Stories RSS news feed
             stories.extend(process("http://news.yahoo.com/rss/topstories"))
