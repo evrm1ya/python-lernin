@@ -126,6 +126,7 @@ class TitleTrigger(PhraseTrigger):
     def evaluate(self, story):
         return self.has_phrase(story.get_title())
 
+
 # Problem 4
 
 class DescriptionTrigger(PhraseTrigger):
@@ -139,14 +140,41 @@ class DescriptionTrigger(PhraseTrigger):
 # TIME TRIGGERS
 
 # Problem 5
-# TODO: TimeTrigger
 # Constructor:
 #        Input: Time has to be in EST and in the format of "%d %b %Y %H:%M:%S".
 #        Convert time from string to a datetime before saving it as an attribute.
 
-# Problem 6
-# TODO: BeforeTrigger and AfterTrigger
+class TimeTrigger(Trigger):
+    def __init__(self, time):
+        self.time = datetime \
+            .strptime(time, '%d %b %Y %H:%M:%S') \
+            .replace(tzinfo = pytz.timezone('EST'))
 
+
+# Problem 6
+
+class BeforeTrigger(TimeTrigger):
+    def __init__(self, time):
+        TimeTrigger.__init__(self, time)
+
+    def evaluate(self, story):
+        return self.is_before(story.get_pubdate())
+
+    def is_before(self, pubdate):
+        pubdate = pubdate.replace(tzinfo = pytz.timezone('EST'))
+        return pubdate < self.time
+        
+
+class AfterTrigger(TimeTrigger):
+    def __init__(self, time):
+        TimeTrigger.__init__(self, time)
+
+    def evaluate(self, story):
+        return self.is_after(story.get_pubdate())
+
+    def is_after(self, pubdate):
+        pubdate = pubdate.replace(tzinfo = pytz.timezone('EST'))
+        return pubdate > self.time
 
 # COMPOSITE TRIGGERS
 
