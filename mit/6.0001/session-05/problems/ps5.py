@@ -176,16 +176,39 @@ class AfterTrigger(TimeTrigger):
         pubdate = pubdate.replace(tzinfo = pytz.timezone('EST'))
         return pubdate > self.time
 
+
 # COMPOSITE TRIGGERS
 
 # Problem 7
-# TODO: NotTrigger
+
+class NotTrigger(Trigger):
+    def __init__(self, trigger):
+        self.trigger = trigger
+
+    def evaluate(self, story):
+        return not self.trigger.evaluate(story)
+
 
 # Problem 8
-# TODO: AndTrigger
+
+class AndTrigger(Trigger):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
+
+    def evaluate(self, story):
+        return self.t1.evaluate(story) and self.t2.evaluate(story)
+
 
 # Problem 9
-# TODO: OrTrigger
+
+class OrTrigger(Trigger):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
+
+    def evaluate(self, story):
+        return self.t1.evaluate(story) or self.t2.evaluate(story)
 
 
 #======================
