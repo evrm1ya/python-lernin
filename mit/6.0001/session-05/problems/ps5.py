@@ -238,10 +238,15 @@ def filter_stories(stories, triggerlist):
 
     Returns: a list of only the stories for which a trigger in triggerlist fires.
     """
-    # TODO: Problem 10
-    # This is a placeholder
-    # (we're just returning all the stories, with no filtering)
-    return stories
+
+    results = []
+
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story):
+                results.append(story)
+
+    return results
 
 
 
@@ -276,13 +281,14 @@ def read_trigger_config(filename):
 SLEEPTIME = 120 #seconds -- how often we poll
 
 def main_thread(master):
-    # A sample trigger list - you might need to change the phrases to correspond
+    # A sample trigger list
+    # you might need to change the phrases to correspond
     # to what is currently in the news
     try:
-        t1 = TitleTrigger("election")
-        t2 = DescriptionTrigger("Trump")
-        t3 = DescriptionTrigger("Clinton")
-        t4 = AndTrigger(t2, t3)
+        t1 = TitleTrigger("softbank")
+        t2 = DescriptionTrigger("iphone")
+        t3 = DescriptionTrigger("ipad")
+        t4 = OrTrigger(t2, t3)
         triggerlist = [t1, t4]
 
         # Problem 11
