@@ -295,7 +295,6 @@ def handle_trigger_command(triggers, trigger_list, trigger_config):
     triggers[trigger_name] = trigger
 
 
-
 def read_trigger_config(filename):
     """
     filename: the name of a trigger configuration file
@@ -312,21 +311,13 @@ def read_trigger_config(filename):
         if not (len(line) == 0 or line.startswith('//')):
             lines.append(line)
 
-    # TODO: Problem 11
-    # line is the list of lines that you need to parse and for which you need
-    # to build triggers
-
     triggers = {}
     trigger_list = []
 
     for l in lines:
         handle_trigger_command(triggers, trigger_list, l)
 
-    print(triggers)
-    print(trigger_list)
-
     return trigger_list
-
 
 
 SLEEPTIME = 120 #seconds -- how often we poll
